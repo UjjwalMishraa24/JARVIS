@@ -1,0 +1,5 @@
+surrender = "https://www.youtube.com/watch?v=5zaIRp_zUKE"
+winning_speech = "https://www.youtube.com/watch?v=vsWxs1tuwDk"
+Enigma = "https://www.youtube.com/watch?v=32uTT424Nx4"
+chambers =   "https://www.youtube.com/watch?v=pQsF3pzOc54"
+rafi = "https://www.youtube.com/watch?v=mfEQgoVi7P4"
