@@ -1,7 +1,7 @@
 import speech_recognition as sr
 import webbrowser
 import pyttsx3
-import music_lib
+import musiclibrary
 import requests
 
 r = sr.Recognizer()
@@ -19,7 +19,7 @@ def process_command(c):
         webbrowser.open("https://chatgpt.com/")
     elif "open google" in c:
         webbrowser.open("https://google.com/")
-    elif "chess" in c:
+    elif "open chessboard" in c:
         webbrowser.open("https://chess.com/")
     elif "open insta" in c:
         webbrowser.open("https://instagram.com/")
@@ -28,16 +28,10 @@ def process_command(c):
     elif "open youtube" in c:
         webbrowser.open("https://youtube.com/")
     elif c.startswith("play"):
-        parts = c.split(maxsplit=1)
-        if len(parts) > 1:
-            song = parts[1]
-            link = music_lib.music.get(song)
-            if link:
-                webbrowser.open(link)
-            else:
-                speak(f"Sorry, I couldn't find the song {song}.")
-        else:
-            speak("Please specify a song name.")
+        song = c.lower().split(" ")[1]
+        link = musiclibrary.music[song]
+        webbrowser.open(link)
+
     elif "news" in c:
         r = requests.get(f"https://newsapi.org/v2/top-headlines?country=in&apiKey={newsapi}")
         if r.status_code == 200:
@@ -53,6 +47,7 @@ if __name__ == "__main__":
     while True:
         print("Listening for 'Jarvis'...")
         try:
+            print("Recognising...")
             with sr.Microphone() as source:
                 audio = r.listen(source, timeout=3, phrase_time_limit=2)
                 word = r.recognize_google(audio)
