@@ -3,12 +3,10 @@ import webbrowser
 import pyttsx3
 import musiclibrary
 import requests
-from datetime import datetime, timedelta
-
 
 r = sr.Recognizer()
 engine = pyttsx3.init()
-nasaapi = "LBFM3Rtr9BdRQGommKopAK63v0JLdMwQ9BxSb8Nr"
+newsapi = "8e1ef52c-8e30-4158-94ae-030f1478c563"
 
 def speak(text):
     engine.say(text)
@@ -36,24 +34,15 @@ def process_command(c):
         link = musiclibrary.music[song]
         webbrowser.open(link)
 
-    elif "geomagnetic storm" in c.lower():
-        end_date = datetime.today().strftime('%Y-%m-%d')
-        start_date = (datetime.today() - timedelta(days=7)).strftime('%Y-%m-%d')  # past 7 days
-        url = f"https://api.nasa.gov/DONKI/GST?startDate={start_date}&endDate={end_date}&api_key={nasaapi}"
-        try:
-            r = requests.get(url)
-            if r.status_code == 200:
-                data = r.json()
-                if data:
-                    for storm in data:
-                        speak(f"Storm detected on {storm.get('startTime', 'unknown date')}")
-                else:
-                    speak("No geomagnetic storms detected in the past week.")
-            else:
-                speak("NASA API request failed.")
-        except Exception as e:
-            speak(f"An error occurred: {str(e)}")
-
+    elif "news" in c.lower():
+        r = requests.get(f"https://newsapi.org/v2/top-headlines?country=in&apiKey={newsapi}")
+        if r.status_code == 200:
+            data = r.json()
+            articles = data.get("articles", [])  # Limit to top 5
+            for article in articles:
+                speak(article["title"])
+        else:
+            speak("Sorry, I could not fetch the news at the moment.")
 
 if __name__ == "__main__":
     speak("Initializing Jarvis...")
@@ -76,11 +65,3 @@ if __name__ == "__main__":
             print("Didn't catch that.")
         except Exception as e:
             print(f"Jarvis error: {e}")
-
-
-
-
-
-
-
-
