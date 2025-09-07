@@ -23,5 +23,7 @@ a versatile desktop assistant.
 # Future Enhancements
 
 1.Add more API integrations for weather, news, and smart home controls
+
 2.Implement GUI for a more interactive experience
+
 3.Enable multi-language support
